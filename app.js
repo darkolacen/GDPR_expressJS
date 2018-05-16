@@ -7,6 +7,10 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var menu = require('./routes/menu');
+var prijava = require('./routes/prijava');
+var session = require('express-session');
+var passport = require('passport');
 
 var app = express();
 
@@ -21,9 +25,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/menu', menu);
+app.use('/prijava', prijava);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
