@@ -1,7 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
-var passport = require('passport');
+const express = require('express');
+const router = express.Router();
+const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+const passport = require('passport');
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:27017";
+
 
 passport.use(new GoogleStrategy({
     clientID:     '904984450856-bhv9bnsihcd2u31br89dq5132olsah0i.apps.googleusercontent.com',
@@ -12,13 +15,32 @@ passport.use(new GoogleStrategy({
   function(request, accessToken, refreshToken, profile, done) {
     //TODO: more v bazo al pa nekam dodat usera. Ce ze obstaja pa nic
     
-    console.log(profile.displayName);
-    var user = {
-      g_id: profile.id,
-      name: profile.displayName,
-      email: profile.emails[0].value
-    };
-    return done(null, user);
+    MongoClient.connect(url, function(err, client) {
+      const db = client.db('praktikum');
+      if (err) throw err;
+      db.collection("Users").findOne({
+              'email': profile.emails[0].value
+          }, function(err, user) {
+              if (err) {
+                  return done(err);
+              }
+              if (!user) {
+                  var user = {
+                    g_id: profile.id,
+                    name: profile.displayName,
+                    email: profile.emails[0].value
+                  };
+                  db.collection("Users").insertOne(user, function(err, res) {
+                    if (err) throw err;
+                    console.log("1 document inserted");
+                    client.close();
+                  });
+                  return done(err, user);
+              } else {
+                  return done(err, user);
+              }
+        });
+      });
 
   }
 ));

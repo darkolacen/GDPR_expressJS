@@ -15,4 +15,9 @@ router.get('/',isUserAuthenticated, function(req, res, next) {
   });
 });
 
+router.get('/logout',isUserAuthenticated, function (req, res, next) {
+  delete req.session.user;
+  res.redirect('/');
+});
+
 module.exports = router;
