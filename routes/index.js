@@ -1,5 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const Mail = require('./mail.js');
+
+var mail = new Mail();
+
+
 
 function isUserAuthenticated(req,res,next){
   if (req.session.user) {
@@ -8,7 +13,9 @@ function isUserAuthenticated(req,res,next){
   res.redirect("/prijava");
 }
 
+
 router.get('/',isUserAuthenticated, function(req, res, next) {
+  mail.posli('stalkaiser@gmail.com', 'hello');
   res.render('index', { 
     title: 'Express',
     user: req.session.user 

@@ -6,8 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
-var menu = require('./routes/menu');
 var prijava = require('./routes/prijava');
 var session = require('express-session');
 var passport = require('passport');
@@ -43,8 +41,6 @@ passport.deserializeUser(function(user, done) {
 });
 
 app.use('/', index);
-app.use('/users', users);
-app.use('/menu', menu);
 app.use('/prijava', prijava);
 
 // catch 404 and forward to error handler
