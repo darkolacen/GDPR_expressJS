@@ -30,6 +30,4 @@ module.exports = function () {
         else
           console.log(info);
       });
-    
-    
   };

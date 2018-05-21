@@ -1,14 +1,5 @@
 extends layout
 
 block content
-  nav.navbar.navbar-light.bg-light.fixed-top
-    span.navbar-brand Home
-    span.nav-item.dropdown
-      a.nav-link.dropdown-toggle(href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")= user.name
-      .dropdown-menu(aria-labelledby="navbarDropdown")
-        a.dropdown-item(href="/logout") Logout
-        .dropdown-divider
-        span.dropdown-item nekaj druga
-        
   h1= title
   p Welcome #{user.name}

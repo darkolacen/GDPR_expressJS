@@ -15,7 +15,7 @@ function isUserAuthenticated(req,res,next){
 
 
 router.get('/',isUserAuthenticated, function(req, res, next) {
-  mail.posli('stalkaiser@gmail.com', 'hello');
+  //mail.posli('stalkaiser@gmail.com', 'hello');
   res.render('index', { 
     title: 'Express',
     user: req.session.user 

@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var prijava = require('./routes/prijava');
+var profil = require('./routes/profil');
 var session = require('express-session');
 var passport = require('passport');
 
@@ -42,6 +43,7 @@ passport.deserializeUser(function(user, done) {
 
 app.use('/', index);
 app.use('/prijava', prijava);
+app.use('/profil', profil);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

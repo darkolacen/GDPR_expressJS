@@ -8,4 +8,12 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     
   body
+    nav.navbar.navbar-light.bg-light.fixed-top
+      a.navbar-brand(href="/") Home
+      span.nav-item.dropdown
+        a.nav-link.dropdown-toggle(href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")= user.name
+        .dropdown-menu(aria-labelledby="navbarDropdown")
+          a.dropdown-item(href="/logout") Logout
+          .dropdown-divider
+          a.dropdown-item(href="/profil") Profile
     block content
