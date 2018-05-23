@@ -28,7 +28,8 @@ passport.use(new GoogleStrategy({
                   var user = {
                     g_id: profile.id,
                     name: profile.displayName,
-                    email: profile.emails[0].value
+                    email: profile.emails[0].value,
+                    parents: []
                   };
                   db.collection("Users").insertOne(user, function(err, res) {
                     if (err) throw err;

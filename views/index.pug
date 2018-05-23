@@ -1,5 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome #{user.name}
+  .row.center
+    .col-10
+      h3 Welcome #{user.name}
+
+      form(method="POST" action="/sendMail")
+        .form-group
+          select(name="email")
+            each email in user.parents
+              option(value=email)= email
+            
+        button.btn.btn-primary(type="submit") Send
