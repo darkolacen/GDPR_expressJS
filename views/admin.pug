@@ -1,0 +1,13 @@
+doctype html
+html
+	include header.pug
+	body
+		.row.center
+			.col-10
+				h1 Welcome admin
+
+				table
+					each user in allUsers
+						tr
+							td= user.email
+

@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport({
 
 module.exports = function () {
     return new Mail();
-  }
+  };
   
   function Mail () {
   
@@ -26,7 +26,7 @@ module.exports = function () {
 
       transporter.sendMail(message, function (err, info) {
         if(err)
-          console.log(err)
+          console.log(err);
         else
           console.log(info);
       });

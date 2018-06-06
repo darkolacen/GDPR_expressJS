@@ -48,7 +48,7 @@ router.post('/',isUserAuthenticated, function(req, res, next) {
     var userParent = {
         user: req.session.user.email,
         parent: random
-    }
+    };
 
     MongoClient.connect(url, function(err, client) {
         var db = client.db('praktikum');

@@ -1,13 +1,13 @@
-extends layout
-
-block content
-    .row.center
-        .col-10
-            h2 Add parent
-            br
-            form(method="POST" action="/dodajStarsa/add")
-                .form-group
-                    label(for="exampleInputEmail1") E-mail
-                    input.form-control(type="email" name="email")
-                    
-                button.btn.btn-primary(type="submit") Add
+doctype html
+html
+	include header.pug
+	body
+		.row.center
+			.col-10
+				h2 Add parent
+				br
+				form(method="POST" action="/dodajStarsa/add")
+					.form-group
+						label(for="exampleInputEmail1") E-mail
+						input.form-control(type="email" name="email")
+					button.btn.btn-primary(type="submit") Add

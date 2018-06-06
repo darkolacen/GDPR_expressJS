@@ -1,16 +1,17 @@
-extends layout
-
-block content
-    .row.center
-        .col-10
-            h2 Edit profile
-            br
-            form(method="POST" action="/profil/updateProfile")
-                .form-group
-                    label(for="exampleInputEmail1") Name
-                    input.form-control(value=user.name name="username")
-                .form-group
-                    label(for="exampleInputEmail1") E-mail
-                    input.form-control(type="email" value=user.email name="email" readonly)
-                    
-                button.btn.btn-primary(type="submit") Update
+doctype html
+html
+    include header.pug
+    body
+        .row.center
+            .col-10
+                h2 Edit profile
+                br
+                form(method="POST" action="/profil/updateProfile")
+                    .form-group
+                        label(for="exampleInputEmail1") Name
+                        input.form-control(value=user.name name="username")
+                    .form-group
+                        label(for="exampleInputEmail1") E-mail
+                        input.form-control(type="email" value=user.email name="email" readonly)
+                        
+                    button.btn.btn-primary(type="submit") Update

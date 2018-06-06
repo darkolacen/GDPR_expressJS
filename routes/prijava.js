@@ -9,12 +9,12 @@ const url = "mongodb://localhost:27017";
 passport.use(new GoogleStrategy({
     clientID:     '904984450856-bhv9bnsihcd2u31br89dq5132olsah0i.apps.googleusercontent.com',
     clientSecret: 'KhupUOZ2uzDc3mbu3_nJJT6M',
-    callbackURL: "http://localhost:3000/prijava/google/callback",
+    callbackURL: "http://localhost:5000/prijava/google/callback",
     passReqToCallback   : true
   },
   function(request, accessToken, refreshToken, profile, done) {
     //TODO: more v bazo al pa nekam dodat usera. Ce ze obstaja pa nic
-    
+
     MongoClient.connect(url, function(err, client) {
       const db = client.db('praktikum');
       if (err) throw err;
@@ -25,7 +25,7 @@ passport.use(new GoogleStrategy({
                   return done(err);
               }
               if (!user) {
-                  var user = {
+                  let user = {
                     g_id: profile.id,
                     name: profile.displayName,
                     email: profile.emails[0].value,
