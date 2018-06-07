@@ -1,0 +1,6 @@
+views/error.pug
+views/header.pug
+views/addParent.pug
+views/index.pug
+views/prijava.pug
+views/profil.pug
