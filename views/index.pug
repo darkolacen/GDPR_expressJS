@@ -4,12 +4,16 @@ html
 	body
 		.row.center
 			.col-10
-				form(method="POST" action="/sendMail")
 				if user.parents[0] != null
-					.form-group
-						select(name="email")
-							each email in user.parents
-								option(value=email)= email
-					button.btn.btn-primary(type="submit") Send
+					form(method="POST" action="/sendMail")
+						.form-group
+							select(name="email")
+								each email in user.parents
+									option(value=email)= email
+							br
+							select(name="text")
+								each text in texts
+									option(value=text._id)= text.naslov
+						input.btn.btn-primary(type="submit" value="Send")
 				else
 					h3 Please #[a(href="/dodajStarsa") ADD] at least one parent email to continue

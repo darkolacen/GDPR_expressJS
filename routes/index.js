@@ -22,17 +22,22 @@ router.get('/',userAuth, (req, res, next) => {
     var db = client.db('praktikum');
     if (err) throw err;
 
-    db.collection("Users").findOne(userEmail, (err, result) => {
-
-      client.close();
-
-      res.render('index', {
-        title: 'Express',
-        user: result
-
+    db.collection("Users").findOne(userEmail, (err, user) => {
+      db.collection("Text").find({}).toArray((err, texts) => {
+        console.log(texts);
+        res.render('index', {
+          title: 'Express',
+          user: user,
+          texts: texts
+        });
+        client.close();
       });
+      
     });
+    
   });
+  
+  
 
 });
 

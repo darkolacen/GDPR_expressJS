@@ -5,6 +5,7 @@ const url = "mongodb://localhost:27017";
 const Mail = require('./mail.js');
 var mail = new Mail();
 var randomstring = require("randomstring");
+var ObjectId = require('mongodb').ObjectID;
 
 
 function isUserAuthenticated(req,res,next){
@@ -41,9 +42,25 @@ router.get('/:randomNum/:email', function(req, res, next) {
 
 
 router.post('/',isUserAuthenticated, function(req, res, next) {
-    console.log(req.body.email);
+    console.log(req.body.text);
+    var textId = req.body.text;
     var random = randomstring.generate();
-    mail.posli(req.body.email, "<a href='http://localhost:3000/sendMail/"+ random +"/"+req.body.email+"'>Confirm</a>");
+    var confirmGumb = "<a href='http://localhost:5000/sendMail/"+ random +"/"+req.body.email+"'>Confirm</a>";
+
+    MongoClient.connect(url, function(err, client) {
+        var db = client.db('praktikum');
+        if (err) throw err;
+        
+        db.collection("Text").findOne({_id: ObjectId(textId)}, (err, result) => {
+
+          mail.posli(req.body.email, result.vsebina + "<br><br>" +confirmGumb);
+
+          client.close();
+        });
+    
+    });
+
+    
 
     var userParent = {
         user: req.session.user.email,

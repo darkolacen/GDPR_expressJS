@@ -41,6 +41,28 @@ router.get('/',userAuth, (req, res, next) => {
 
 });
 
+router.post('/dodajText',userAuth, (req, res, next) => {
+
+  var text = {
+    naslov: req.body.naslov,
+    vsebina: req.body.vsebina
+  };
+
+  MongoClient.connect(url, function(err, client) {
+    var db = client.db('praktikum');
+    if (err) throw err;
+    db.collection("Text").insertOne(text, function(err, res) {
+      if (err) throw err;
+      console.log("1 document inserted");
+      client.close();
+    });
+    
+  });
+res.redirect("/admin");
+  
+
+});
+
 
 
 

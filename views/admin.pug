@@ -5,8 +5,23 @@ html
 		.row.center
 			.col-10
 				h1 Welcome admin
+				br
+				h3 Add new agreement
+
+				form(method="POST" action="/admin/dodajText")
+					span Naslov: 
+					input(type="text" name="naslov")
+					textarea(name="vsebina" rows="4" cols="50")
+					input(type="submit" value="Submit")
+				br
+
+				h3 User table
 
 				table
+					tr
+						td User
+						td Parent
+						td Conformation
 					each user in allUsers
 						tr
 							td= user.email
