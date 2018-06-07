@@ -4,6 +4,7 @@ const Mail = require('./mail.js');
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017";
 var mail = new Mail();
+const _ = require('underscore');
 
 const userAuth = (req,res,next) => {
     if (req.session.user){
@@ -20,20 +21,32 @@ const userAuth = (req,res,next) => {
 };
 
 router.get('/',userAuth, (req, res, next) => {
+  var UserConf = [];
 
   MongoClient.connect(url, function(err, client) {
     var db = client.db('praktikum');
     if (err) throw err;
 
-    db.collection("Users").find({ admin: { $ne: true } }).toArray((err, result) => {
+    db.collection("Users").find({ admin: { $ne: true } }).toArray((err, users) => {
 
-      client.close();
+      db.collection("Confirmation").find({}).toArray((err, confs) => {
 
-      res.render('admin', {
-        user: req.session.user,
-        allUsers: result
 
+        console.log(users);
+
+
+        var emails = _.pluck(users, 'email');
+        
+        client.close();
+
+        res.render('admin', {
+          user: req.session.user,
+          allUsers: users,
+          confs: confs
+
+        });
       });
+
     });
   });
 

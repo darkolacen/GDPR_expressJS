@@ -12,17 +12,24 @@ html
 					span Naslov: 
 					input(type="text" name="naslov")
 					textarea(name="vsebina" rows="4" cols="50")
+					br
 					input(type="submit" value="Submit")
 				br
 
 				h3 User table
 
-				table
-					tr
-						td User
-						td Parent
-						td Conformation
-					each user in allUsers
+				table.table-striped.table
+					thead
 						tr
-							td= user.email
-
+							th User
+							th Parent Conformation
+					tbody
+						each user in allUsers
+							if (confs.find(x => x.user === user.email))
+								tr
+									td #{user.name} (#{user.email})
+									td #{confs.find(x => x.user === user.email).parent}
+							else
+								tr
+									td #{user.name} (#{user.email})
+									td
