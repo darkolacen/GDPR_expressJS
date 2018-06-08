@@ -9,14 +9,15 @@ html
 				h3 Add new agreement
 
 				form(method="POST" action="/admin/dodajText")
-					span Naslov: 
-					input(type="text" name="naslov")
-					textarea(name="vsebina" rows="4" cols="50")
-					br
-					input(type="submit" value="Submit")
+					.form-group
+						label(for="inputNaslov") Naslov: 
+						input(type="text" name="naslov").form-control
+					.form-group
+						textarea(name="vsebina" rows="4" cols="50").form-control
+						br
+					input(type="submit" value="Submit").btn.btn-primary
 				br
 
-				h3 User table
 
 				table.table-striped.table
 					thead
@@ -25,11 +26,9 @@ html
 							th Parent Conformation
 					tbody
 						each user in allUsers
-							if (confs.find(x => x.user === user.email))
-								tr
-									td #{user.name} (#{user.email})
+							tr
+								td #{user.name} (#{user.email})
+								if (confs.find(x => x.user === user.email))
 									td #{confs.find(x => x.user === user.email).parent}
-							else
-								tr
-									td #{user.name} (#{user.email})
-									td
+								else
+									td Not confirmed
