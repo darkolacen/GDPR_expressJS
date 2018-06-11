@@ -41,41 +41,34 @@ router.get('/:randomNum/:email', function(req, res, next) {
 });
 
 
-router.post('/',isUserAuthenticated, function(req, res, next) {
-    console.log(req.body.text);
-    var textId = req.body.text;
+router.post('/', function(req, res, next) {
     var random = randomstring.generate();
-    var confirmGumb = "<a href='http://localhost:5000/sendMail/"+ random +"/"+req.body.email+"'>Confirm</a>";
+    var confirmGumb = "<a href='http://localhost:5000/sendMail/"+ random +"/"+req.body.parentsEmail+"'>Confirm</a>";
+
+    
+
+    mail.posli(req.body.parentsEmail, req.body.vsebina + "<br><br>" +confirmGumb);
 
     MongoClient.connect(url, function(err, client) {
         var db = client.db('praktikum');
         if (err) throw err;
-        
-        db.collection("Text").findOne({_id: ObjectId(textId)}, (err, result) => {
 
-          mail.posli(req.body.email, result.vsebina + "<br><br>" +confirmGumb);
-
-          client.close();
-        });
-    
-    });
-
-    
-
-    var userParent = {
-        user: req.session.user.email,
-        parent: random
-    };
-
-    MongoClient.connect(url, function(err, client) {
-        var db = client.db('praktikum');
-        if (err) throw err;
-        
-        db.collection("Confirmation").insertOne(userParent, function(err, res) {
+        db.collection('Text').count({ firma: req.body.firma }, function(err, count){
             if (err) throw err;
-            console.log("1 document inserted");
-            client.close();
+
+            var userParent = {
+                user: req.body.userEmail,
+                parent: random,
+                version: count,
+                firma: req.body.firma
+            };
+            db.collection("Confirmation").insertOne(userParent, function(err, res) {
+                if (err) throw err;
+                console.log("1 document inserted");
+                client.close();
+            });
         });
+   
     
     });
 

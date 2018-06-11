@@ -6,10 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var admin = require('./routes/admin');
 var prijava = require('./routes/prijava');
 var profil = require('./routes/profil');
 var sendMail = require('./routes/sendMail');
+var firmaLink = require('./routes/firmaLink');
 var session = require('express-session');
 var passport = require('passport');
 
@@ -23,6 +23,7 @@ app.set('view engine', 'pug');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/summernote-cleaner', express.static(__dirname + '/node_modules/summernote-cleaner'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -47,7 +48,7 @@ app.use('/', index);
 app.use('/prijava', prijava);
 app.use('/profil', profil);
 app.use('/sendMail', sendMail);
-app.use('/admin', admin);
+app.use('/firmaLink', firmaLink);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

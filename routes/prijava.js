@@ -29,7 +29,7 @@ passport.use(new GoogleStrategy({
                     g_id: profile.id,
                     name: profile.displayName,
                     email: profile.emails[0].value,
-                    parents: []
+                    firma: ''
                   };
                   db.collection("Users").insertOne(user, function(err, res) {
                     if (err) throw err;

@@ -8,6 +8,9 @@ html
                 br
                 form(method="POST" action="/profil/updateProfile")
                     .form-group
+                        label(for="exampleInputEmail1") Firma
+                        input.form-control(value=user.firma name="firma")
+                    .form-group
                         label(for="exampleInputEmail1") Name
                         input.form-control(value=user.name name="username")
                     .form-group
