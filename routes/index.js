@@ -5,78 +5,59 @@ const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017";
 var mail = new Mail();
 const _ = require('underscore');
+const groupArray = require('group-array');
 
 const userAuth = (req,res,next) => {
-    if (req.session.user){
-      if (req.session.user.admin){
-        return next();
-      }else{
-        res.send("Unauthorized access");
-      }
-    }else{
-      res.redirect("/prijava");
-    }
-    
-  
+    if (req.session.user) {
+    return next();
+  }
+  res.redirect("/prijava");
 };
 
 router.get('/',userAuth, (req, res, next) => {
-  var UserConf = [];
 
   MongoClient.connect(url, function(err, client) {
     var db = client.db('praktikum');
     if (err) throw err;
 
-    db.collection("Users").find({ admin: { $ne: true } }).toArray((err, users) => {
 
-      db.collection("Confirmation").find({}).toArray((err, confs) => {
+    db.collection("Confirmation").find({ firma: req.session.user.firma }).toArray((err, confs) => {
+      
+      client.close();
 
+      console.log(groupArray(confs, 'user'));
 
-        console.log(users);
-
-
-        var emails = _.pluck(users, 'email');
-        
-        client.close();
-
-        res.render('admin', {
-          user: req.session.user,
-          allUsers: users,
-          confs: confs
-
-        });
+      res.render('index', {
+        user: req.session.user,
+        confs: groupArray(confs, 'user')
       });
-
     });
   });
-
-  
-
 });
 
 router.post('/dodajText',userAuth, (req, res, next) => {
 
-  var text = {
-    naslov: req.body.naslov,
-    vsebina: req.body.vsebina
-  };
 
   MongoClient.connect(url, function(err, client) {
     var db = client.db('praktikum');
     if (err) throw err;
+
+    var text = {
+      naslov: req.body.naslov,
+      vsebina: req.body.vsebina,
+      firma: req.session.user.firma
+
+    };
+    //.replace(/<\/p><p>/g, "</p><br><p>")
     db.collection("Text").insertOne(text, function(err, res) {
       if (err) throw err;
       console.log("1 document inserted");
       client.close();
-    });
-    
+    });    
   });
-res.redirect("/admin");
+res.redirect("/");
   
 
 });
-
-
-
 
 module.exports = router;

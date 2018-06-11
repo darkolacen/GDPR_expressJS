@@ -1,0 +1,43 @@
+doctype html
+html
+	include header.pug
+	link(href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet")
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js")
+	script(src="summernote-cleaner/summernote-cleaner.js")
+	body
+		.row.center
+			.col-10
+				h1 Company: #{user.firma}
+				br
+				h3 Add new agreement
+
+				form(method="POST" action="/dodajText")
+					.form-group
+						textarea#summernote(name="vsebina" rows="4" cols="50").form-control
+						br
+					input(type="submit" value="Submit").btn.btn-primary
+				br
+
+				h3 URL: http://localhost:5000/firmaLink/#{user.firma}
+
+				br
+
+				#summernote
+
+				script.
+					$('#summernote').summernote();
+
+
+				table.table-striped.table
+					thead
+						tr
+							th User
+							th Parent Conformation
+							th Version
+					tbody
+						each email in Object.keys(confs)
+							tr
+								td #{email}
+								//- td #{conf.user}
+								//- td #{conf.version}
+								//confs.find(x => x.user === user.email)
