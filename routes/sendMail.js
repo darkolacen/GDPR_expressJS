@@ -75,7 +75,7 @@ router.post('/', function(req, res, next) {
     });
 
 
-    res.redirect("/");
+    res.send("Mail Sent");
 });
 
 

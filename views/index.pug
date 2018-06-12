@@ -5,46 +5,56 @@ html
 	script(src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js")
 	script(src="summernote-cleaner/summernote-cleaner.js")
 	body
+		
 		.row.center
 			.col-10
-				h1 Company: #{user.firma}
-				br
-				h3 Add new agreement
-				h4 Last version: #{version}
+				if (user.firma != '')
+					h1 Company: #{user.firma}
+					br
+					h3 Add new agreement
+					h4 Last version: #{version}
 
-				form(method="POST" action="/dodajText")
-					.form-group
-						textarea#summernote(name="vsebina" rows="4" cols="50").form-control
-						br
-					input(type="submit" value="Submit").btn.btn-primary
-				br
+					form(method="POST" action="/dodajText")
+						.form-group
+							textarea#summernote(name="vsebina" rows="4" cols="50").form-control
+							br
+						input(type="submit" value="Submit").btn.btn-primary
+					br
 
-				h3 URL: http://localhost:5000/firmaLink/#{user.firma}
+					h3 URL: http://localhost:5000/firmaLink/#{user.firma}
 
-				br
-
-
-				
-				script.
-					$("#summernote").summernote('code', "!{text}");
+					br
 
 
-				table.table-striped.table
-					thead
-						tr
-							th User
-							th Parent Conformation
-							th Version
-					tbody
-						each email in Object.keys(confs)
-							- var temp = confs[email].sort(function(a,b) {return (a.version > b.version) ? 1 : ((b.version > a.version) ? -1 : 0);} )
-							- var dol = temp.length
+					if (text == null)
+						script.
+							$("#summernote").summernote();
+					else
+						script.
+							$("#summernote").summernote('code', "!{text.vsebina}");
+
+
+					table.table-striped.table
+						thead
 							tr
-								td= email
-								if (confs[email][dol-1].conf == "yes")
-									td= confs[email][dol-1].parent
-									td= confs[email][dol-1].version
-									//confs.find(x => x.user === user.email)
-								else
-									td not confirmed
-									td /
+								th User
+								th Parent Conformation
+								th Version
+								th IP
+						tbody
+							each email in Object.keys(confs)
+								- var temp = confs[email].sort(function(a,b) {return (a.version > b.version) ? 1 : ((b.version > a.version) ? -1 : 0);} )
+								- var dol = temp.length
+								tr
+									td= email
+									if (confs[email][dol-1].conf == "yes")
+										td= confs[email][dol-1].parent
+										td= confs[email][dol-1].version
+										td= confs[email][dol-1].ip
+										//confs.find(x => x.user === user.email)
+									else
+										td not confirmed
+										td /
+										td /
+				else
+					h3 Please  #[a(href="/profil") ADD] Company name

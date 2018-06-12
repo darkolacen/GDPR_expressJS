@@ -30,7 +30,7 @@ router.get('/',userAuth, (req, res, next) => {
           res.render('index', {
             user: req.session.user,
             confs: groupArray(confs, 'user'),
-            text: text[0].vsebina,
+            text: text[0],
             version: count
           });
             
@@ -66,6 +66,11 @@ router.post('/dodajText',userAuth, (req, res, next) => {
 res.redirect("/");
   
 
+});
+
+router.get('/logout', (req, res, next) => {
+  delete req.session.user;
+  res.redirect('/');
 });
 
 module.exports = router;
