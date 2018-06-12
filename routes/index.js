@@ -22,15 +22,23 @@ router.get('/',userAuth, (req, res, next) => {
 
 
     db.collection("Confirmation").find({ firma: req.session.user.firma }).toArray((err, confs) => {
+
+      db.collection("Text").find({ firma: req.session.user.firma }).sort({ _id : -1 }).limit(1).toArray((err, text) => {
+        db.collection('Text').count({ firma: req.session.user.firma }, function(err, count){
+          client.close();
+
+          res.render('index', {
+            user: req.session.user,
+            confs: groupArray(confs, 'user'),
+            text: text[0].vsebina,
+            version: count
+          });
+            
+        });
       
-      client.close();
-
-      console.log(groupArray(confs, 'user'));
-
-      res.render('index', {
-        user: req.session.user,
-        confs: groupArray(confs, 'user')
+        
       });
+    
     });
   });
 });

@@ -6,6 +6,7 @@ const Mail = require('./mail.js');
 var mail = new Mail();
 var randomstring = require("randomstring");
 var ObjectId = require('mongodb').ObjectID;
+var ip = require('ip');
 
 
 function isUserAuthenticated(req,res,next){
@@ -16,7 +17,7 @@ function isUserAuthenticated(req,res,next){
 }
 
 router.get('/:randomNum/:email', function(req, res, next) {
-    var newvalues = { $set: {parent: req.params.email} };
+    var newvalues = { $set: {parent: req.params.email, conf: "yes", ip: ip.address()} };
     var parentCode = { parent: req.params.randomNum };
     MongoClient.connect(url, function(err, client) {
         var db = client.db('praktikum');
@@ -60,7 +61,8 @@ router.post('/', function(req, res, next) {
                 user: req.body.userEmail,
                 parent: random,
                 version: count,
-                firma: req.body.firma
+                firma: req.body.firma,
+                conf: "no"
             };
             db.collection("Confirmation").insertOne(userParent, function(err, res) {
                 if (err) throw err;

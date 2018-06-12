@@ -10,6 +10,7 @@ html
 				h1 Company: #{user.firma}
 				br
 				h3 Add new agreement
+				h4 Last version: #{version}
 
 				form(method="POST" action="/dodajText")
 					.form-group
@@ -22,10 +23,10 @@ html
 
 				br
 
-				#summernote
 
+				
 				script.
-					$('#summernote').summernote();
+					$("#summernote").summernote('code', "!{text}");
 
 
 				table.table-striped.table
@@ -36,8 +37,14 @@ html
 							th Version
 					tbody
 						each email in Object.keys(confs)
+							- var temp = confs[email].sort(function(a,b) {return (a.version > b.version) ? 1 : ((b.version > a.version) ? -1 : 0);} )
+							- var dol = temp.length
 							tr
-								td #{email}
-								//- td #{conf.user}
-								//- td #{conf.version}
-								//confs.find(x => x.user === user.email)
+								td= email
+								if (confs[email][dol-1].conf == "yes")
+									td= confs[email][dol-1].parent
+									td= confs[email][dol-1].version
+									//confs.find(x => x.user === user.email)
+								else
+									td not confirmed
+									td /

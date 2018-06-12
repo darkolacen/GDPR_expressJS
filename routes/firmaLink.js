@@ -13,7 +13,7 @@ router.get('/:firma', (req, res, next) => {
   MongoClient.connect(url, function(err, client) {
     var db = client.db('praktikum');
 
-    db.collection("Text").find({ firma: req.params.firma }).sort({ version: 1 }).limit(1).toArray((err, result) => {
+    db.collection("Text").find({ firma: req.params.firma }).sort({ _id : -1 }).limit(1).toArray((err, result) => {
       
       client.close();
 

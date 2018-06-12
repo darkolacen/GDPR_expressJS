@@ -20,7 +20,9 @@ html
                         input.form-control(type="email" name="parentsEmail")
                     .form-group
                         label(for="exampleInputEmail1") Text
-                        textarea.form-control(name="vsebina" rows="4" cols="50" readonly) #{text.vsebina}
+                        div.border.border-primary.
+                            !{text.vsebina}
                     input(type="hidden" name="firma" value=firma)
+                    input(type="hidden" name="vsebina" value=text.vsebina)
                         
                     button.btn.btn-primary(type="submit") Send Mail
