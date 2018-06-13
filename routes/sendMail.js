@@ -7,6 +7,11 @@ var mail = new Mail();
 var randomstring = require("randomstring");
 var ObjectId = require('mongodb').ObjectID;
 var ip = require('ip');
+var pdfcrowd = require("pdfcrowd");
+var fs = require('fs'); 
+
+
+var pdfClient = new pdfcrowd.HtmlToPdfClient("stalkaiser", "310af098b534d1141139c41c3f72ce44");
 
 
 function isUserAuthenticated(req,res,next){
@@ -17,20 +22,36 @@ function isUserAuthenticated(req,res,next){
 }
 
 router.get('/:randomNum/:email', function(req, res, next) {
-    var newvalues = { $set: {parent: req.params.email, conf: "yes", ip: ip.address()} };
+    var newvalues = { $set: {parent: req.params.email, conf: "yes", parent_ip: ip.address(), date: new Date()} };
     var parentCode = { parent: req.params.randomNum };
     MongoClient.connect(url, function(err, client) {
         var db = client.db('praktikum');
         if (err) throw err;
         
-        db.collection("Confirmation").findOne(parentCode, function(err, res) {
+        db.collection("Confirmation").findOne(parentCode, function(err, conf) {
             if (err) throw err;
-            if (!res){
+            var issue_date = conf._id.getTimestamp();
+            var head = "<span>User: "+conf.user+", ip: "+conf.user_ip+", date: "+issue_date+"</span><br><span>Parent: "+req.params.email+", ip: "+ip.address()+", date: "+new Date()+"</span><hr>";
+            
+            if (!conf){
                 res.send("Link not valid");
             }else{
                 db.collection("Confirmation").updateOne(parentCode, newvalues, function(err, res) {
                     if (err) throw err;
-                    console.log("1 email updated");
+                    console.log(conf);
+                });
+
+                db.collection("Text").find({ firma: conf.firma }).sort({ _id : 1 }).toArray((err, text) => {
+                  console.log(text);
+                  client.close();
+                  pdfClient.convertStringToFile(
+                    head+""+text[conf.version-1].vsebina,
+                    "pdfs/"+conf._id+".pdf",
+                    function(err, fileName) {
+                        if (err) return console.error("Pdfcrowd Error: " + err);
+                        console.log("Success: the file was created " + fileName);
+                    }
+                  );            
                 });
             }
             console.log("1 document inserted");
@@ -62,7 +83,8 @@ router.post('/', function(req, res, next) {
                 parent: random,
                 version: count,
                 firma: req.body.firma,
-                conf: "no"
+                conf: "no",
+                user_ip: ip.address(),
             };
             db.collection("Confirmation").insertOne(userParent, function(err, res) {
                 if (err) throw err;

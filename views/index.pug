@@ -40,7 +40,8 @@ html
 								th User
 								th Parent Conformation
 								th Version
-								th IP
+								th Parent IP
+								th PDF
 						tbody
 							each email in Object.keys(confs)
 								- var temp = confs[email].sort(function(a,b) {return (a.version > b.version) ? 1 : ((b.version > a.version) ? -1 : 0);} )
@@ -50,10 +51,12 @@ html
 									if (confs[email][dol-1].conf == "yes")
 										td= confs[email][dol-1].parent
 										td= confs[email][dol-1].version
-										td= confs[email][dol-1].ip
+										td= confs[email][dol-1].parent_ip
+										td #[a(href="/pdf/"+confs[email][dol-1]._id) pdf]
 										//confs.find(x => x.user === user.email)
 									else
 										td not confirmed
+										td /
 										td /
 										td /
 				else

@@ -4,7 +4,6 @@ const Mail = require('./mail.js');
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017";
 var mail = new Mail();
-const _ = require('underscore');
 const groupArray = require('group-array');
 
 const userAuth = (req,res,next) => {

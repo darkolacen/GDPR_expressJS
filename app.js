@@ -10,6 +10,7 @@ var prijava = require('./routes/prijava');
 var profil = require('./routes/profil');
 var sendMail = require('./routes/sendMail');
 var firmaLink = require('./routes/firmaLink');
+var pdf = require('./routes/pdf');
 var session = require('express-session');
 var passport = require('passport');
 
@@ -49,6 +50,7 @@ app.use('/prijava', prijava);
 app.use('/profil', profil);
 app.use('/sendMail', sendMail);
 app.use('/firmaLink', firmaLink);
+app.use('/pdf', pdf);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

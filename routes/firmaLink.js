@@ -5,7 +5,6 @@ const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017";
 var mail = new Mail();
 const _ = require('underscore');
-var autoIncrement = require("mongodb-autoincrement");
 
 
 
